@@ -7,7 +7,7 @@ LinkedIn &amp; WordPress Content Creator AI Agent with n8n
 
 **LinkedIn** API oluşturmak için öncelikle şahsına ait bir şirket/organizasyon sayfası oluşturmalısınız ardından [talimatları](https://www.linkedin.com/developers/apps) izleyerek api erişimi alabilirsiniz.
 
-**WordPress** API için WordPress sayfasınzdan kullanıcı eklemeniz yeterli ardından [api](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.wordpress/) kolaylıkla alınır.
+**WordPress** için WordPress sayfasınzdan kullanıcı eklemeniz yeterli ardından bu [dökümanla](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.wordpress/) giriş yapmak için uygumala şifresi vs halletmeniz lazım.
 
 **Google Drive** bi tık uğraştırabilir ancak [dökümanı](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.googledrive/) takip ederseniz inanıyorum ki 1 saat içinde halledersiniz.
 
