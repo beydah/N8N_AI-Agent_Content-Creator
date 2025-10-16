@@ -1,0 +1,551 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Agent - Content Writer",
+        "height": 736,
+        "width": 1056,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "5dbaaac2-aa51-4125-9363-9164950062cd",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.content }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a professional content creator and developer AI. Your task is to generate **high-quality, SEO-friendly blog content in Turkish** based on the user's topic. Additionally, for the same topic, generate a **detailed English image generation prompt** suitable for creating a **1:1 square blog image**.\nFocus on technology-related areas such as AI agents, Desktop, Mobile, Web, or Trading Bot development, targeting audiences interested in software services.\nThe blog content **must answer at least one** of the following key questions to ensure informative and structured writing:\n- What is it?\n- How does it work / how to do it?\n- What are its advantages or disadvantages?\n- Where or how is it used?\n**Memory rule:** If the last 3 topics in memory are the same, do **not** use the user's given topic. Instead, create a new but relevant topic within the same categories to ensure content variety.\nAlways output only **valid JSON** in the following structure:\n\n{\n  \"title\": \"Turkish blog title\",\n  \"content\": \"Turkish blog content (max 2500 characters) that answers at least one of the key questions listed above\",\n  \"img_prompt\": \"English image generation prompt describing a 1:1 square blog image that visually represents the topic. Use a modern, minimal, and professional style.\",\n  \"img_title\": \"A short, English, hyphenated title derived from the Turkish title (e.g., 'ai-agent-automation' or 'trading-bot-development')\"\n}\n\nDo not include any additional text, explanation, markdown formatting, or commentary outside the JSON."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        272
+      ],
+      "id": "dbaa5734-dbd9-476d-9f04-55a5e9dd8a6a",
+      "name": "Create Content",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b47109ed-931e-4302-8d3e-41411f002a4d",
+              "name": "title",
+              "value": "={{ $json.title.rendered }}",
+              "type": "string"
+            },
+            {
+              "id": "de30c60f-03a0-479a-a863-a7587e250535",
+              "name": "content",
+              "value": "={{ $json.content.rendered }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        432,
+        544
+      ],
+      "id": "6aca4b1b-879e-470f-b24a-8d311c55572c",
+      "name": "Get Content"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"title\": {},\n  \"content\": {},\n  \"img_prompt\": {},\n  \"img_title\": {}\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        400
+      ],
+      "id": "5a7c1925-c6a0-4512-8839-6d9c508c7919",
+      "name": "Output Parse"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        592,
+        112
+      ],
+      "id": "f467d655-2cb8-4ec4-94d6-3725517c6211",
+      "name": "Writer",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "IiS2TsiIXiMRvZjL",
+          "name": "GEMINI API GIR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        592,
+        576
+      ],
+      "id": "8c077c75-4789-4397-bac6-2caf136cb67e",
+      "name": "Parser",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "IiS2TsiIXiMRvZjL",
+          "name": "GEMINI API GIR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "options": {
+          "categories": [
+            6,
+            5,
+            220,
+            3,
+            1
+          ],
+          "order": "desc",
+          "status": "publish"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        272,
+        544
+      ],
+      "id": "8569727e-1d1a-402a-a3d2-c65d0115b89a",
+      "name": "Get Post",
+      "alwaysOutputData": false,
+      "credentials": {
+        "wordpressApi": {
+          "id": "vrsfawuiFSAr407D",
+          "name": "WORDPRESS HESABINI GIR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Get Content').item.json.title }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        736,
+        112
+      ],
+      "id": "7cead759-18fd-4505-a7a6-29f7c500277b",
+      "name": "Memory"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.0-flash-preview-image-generation",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.0-flash-preview-image-generation"
+        },
+        "prompt": "={{ $('Create Content').item.json.output.img_prompt }}",
+        "options": {
+          "sampleCount": 1,
+          "binaryPropertyOutput": "data"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        912,
+        80
+      ],
+      "id": "eafb428a-8754-457a-a911-eb7b0f6ae0f7",
+      "name": "Designer",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "IiS2TsiIXiMRvZjL",
+          "name": "GEMINI API GIR"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const content = $('Create Content').first().json.output.content;\nconst clean_content = content ? content.replace(/\\*/g, '') : '';\nreturn [{json: {clean_content}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        912,
+        304
+      ],
+      "id": "7c798912-da77-4654-9ea8-f21ec6653beb",
+      "name": "Clear Content"
+    },
+    {
+      "parameters": {
+        "title": "={{ $('Create Content').item.json.output.title }}",
+        "additionalFields": {
+          "content": "={{ $json.clean_content }}",
+          "status": "draft",
+          "categories": [
+            1
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        304
+      ],
+      "id": "a3ca7562-101a-48d9-9ae4-76888df27d1a",
+      "name": "Create Blog",
+      "credentials": {
+        "wordpressApi": {
+          "id": "vrsfawuiFSAr407D",
+          "name": "WORDPRESS HESABINI GIR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "person": "nfXLHAU3tv",
+        "text": "={{ $('Create Content').item.json.output.title }}\n{{ $json.clean_content }}\n- Beydah AI\n\nhttps://beydahsaglam.com",
+        "additionalFields": {
+          "visibility": "PUBLIC"
+        }
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        528
+      ],
+      "id": "13f4c51a-6e26-4818-a568-c2bc0674567e",
+      "name": "Create Post",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "zE9mNO4IGZQPWrvg",
+          "name": "LINKEDIN API GIR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Talimatlar\n### API\n**Gemini** API için [buradan](https://aistudio.google.com/api-keys) ücretsiz api oluşturabilirsiniz.\n\n**LinkedIn** API oluşturmak için öncelikle şahsına ait bir şirket/organizasyon sayfası oluşturmalısınız ardından [talimatları](https://www.linkedin.com/developers/apps) izleyerek api erişimi alabilirsiniz.\n\n**WordPress** API için WordPress sayfasınzdan kullanıcı eklemeniz yeterli ardından [api](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.wordpress/) kolaylıkla alınır.\n\n**Google Drive** bi tık uğraştırabilir ancak [dökümanı](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.googledrive/) takip ederseniz inanıyorum ki 1 saat içinde halledersiniz.\n",
+        "height": 736,
+        "width": 192,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "c6e74148-d181-47ee-b46d-4f5ee7760cd1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        48,
+        544
+      ],
+      "id": "c1d7454e-644b-4cbc-a2b2-4fbcd7c4f6b6",
+      "name": "Click"
+    },
+    {
+      "parameters": {
+        "content": "### WordPress API",
+        "height": 208,
+        "width": 166
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        240,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "b3f87eb4-26e1-4091-b255-68fa8ee4f1c6",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### Gemini API",
+        "height": 208,
+        "width": 166,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        880,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "53be01ed-da38-45cb-acad-2c768337c93a",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### Google API",
+        "height": 208,
+        "width": 166,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1072,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "e686bd2b-8743-4d78-a5dd-71ac097f4670",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### WordPress API",
+        "height": 208,
+        "width": 166
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1072,
+        256
+      ],
+      "typeVersion": 1,
+      "id": "2b6721c0-5c79-41d4-aad2-81e72c6acb52",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "### LinkedIn API",
+        "height": 208,
+        "width": 166
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1072,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "440b0be4-40a8-4d76-a956-a038c99717a9",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "### Gemini API",
+        "height": 208,
+        "width": 150,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "89e6de3e-c829-4ec9-a323-bff02c0eb5be",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "### Gemini API",
+        "height": 208,
+        "width": 150,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "cb96c3fd-54ce-4dc8-91b5-ca66cb29c405",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "name": "=post-banner_{{ $('Create Content').item.json.output.img_title }}.{{ $json.fileExtension }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1104,
+        80
+      ],
+      "id": "8b1c2377-50c5-453e-8843-f6cd7b45c0d0",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Y7cJN91oEX9F3qxN",
+          "name": "GOOGLE API GIR"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Create Content": {
+      "main": [
+        [
+          {
+            "node": "Designer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Clear Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Content": {
+      "main": [
+        [
+          {
+            "node": "Create Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output Parse": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Create Content",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Writer": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Create Content",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Output Parse",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Post": {
+      "main": [
+        [
+          {
+            "node": "Get Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Create Content",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Designer": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Content": {
+      "main": [
+        [
+          {
+            "node": "Create Blog",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b62ff8f2ac8495167170b5602af421bda42d8f187525425f5e298706264f16b3"
+  },
+  "tags": []
+}
