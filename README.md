@@ -72,7 +72,7 @@ An automated content creation workflow that generates SEO-friendly blog posts, c
 6. In n8n, create a "Google Drive OAuth2 API" credential
 7. Follow the OAuth flow to authorize access
 
-## � Docker & n8n Setup
+## Docker & n8n Setup
 
 ### 1. Docker Installation
 
