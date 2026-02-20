@@ -133,6 +133,31 @@ Any other context, mockups, or examples.
    - Document all required settings
    - Include validation for critical parameters
 
+## 🤖 Agent Contribution Rules
+
+To maintain high standards and interoperability, all agents must follow these rules:
+
+1. **Storage Location**
+   - All agents must be placed in the `agent` folder.
+   - Example path: `agent/your_agent_name/`
+
+2. **Required Files**
+   - Each agent directory **must** contain:
+     - `agent.json`: The exported n8n workflow.
+     - `README.md`: Comprehensive documentation for the agent.
+
+3. **Documentation Requirements**
+   - The agent's `README.md` must include:
+     - Download link for the `.json` file.
+     - Return link to the main project [README.md](../../README.md).
+     - Visual representation of nodes (using Mermaid diagrams).
+     - Author information and last update date.
+
+4. **Interoperability**
+   - Agents should be designed to be called by other agents.
+   - Implement **HTTP Request** nodes or **Execute Workflow** nodes for cross-agent communication.
+   - Inputs and outputs should be standardized where possible.
+
 ### Workflow Modifications
 
 When modifying the n8n workflow:
@@ -188,10 +213,6 @@ Before submitting changes:
 
 - [ ] Workflow imports successfully
 - [ ] All API connections work
-- [ ] Content generation produces expected output
-- [ ] Images are created and uploaded correctly
-- [ ] WordPress posts are created properly
-- [ ] LinkedIn posts are published successfully
 - [ ] Error handling works as expected
 - [ ] Documentation is updated
 - [ ] No sensitive data is exposed
@@ -200,11 +221,7 @@ Before submitting changes:
 
 Set up a test environment with:
 
-- Test WordPress site
-- Test LinkedIn page
 - Separate API credentials for testing
-- Isolated Google Drive folder
-- Test domain for SSL testing
 
 ## 📝 Pull Request Process
 
@@ -275,16 +292,11 @@ We use [Semantic Versioning](https://semver.org/):
 
 - [n8n Documentation](https://docs.n8n.io/)
 - [Google Gemini API Docs](https://ai.google.dev/docs)
-- [WordPress REST API](https://developer.wordpress.org/rest-api/)
-- [LinkedIn API Documentation](https://docs.microsoft.com/en-us/linkedin/)
-- [Google Drive API](https://developers.google.com/drive/api)
 
 ### Learning Resources
 
 - [n8n Community](https://community.n8n.io/)
 - [Docker Documentation](https://docs.docker.com/)
-- [Nginx Configuration Guide](https://nginx.org/en/docs/)
-- [Let's Encrypt Documentation](https://letsencrypt.org/docs/)
 
 ## 🎯 Contribution Areas
 
