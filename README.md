@@ -55,7 +55,7 @@ Navigate to your n8n instance and:
 
 ## 📚 Documentation & Wiki
 
-For in-depth technical details, architecture diagrams, and enterprise deployment guides, please visit our **[Project Wiki](./WIKI.md)**.
+For in-depth technical details, architecture diagrams, and enterprise deployment guides, please visit our **[Project Wiki](https://github.com/beydah/N8N_AI-Agent/wiki)**.
 
 ---
 
