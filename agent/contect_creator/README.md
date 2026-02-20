@@ -17,25 +17,11 @@ This agent is designed to generate high-quality blog content and accompanying vi
 
 ```mermaid
 graph TD
-    Trigger([Click - Manual Trigger]) --> GetPost[WordPress - Get Last Post]
-    GetPost --> GetContent[Set - Extract Title/Content]
-    GetContent --> AIWriter[LangChain Agent - Create Content]
-    
-    subgraph "AI Content Generation"
-        AIWriter -- "uses" --> GeminiWriter[Google Gemini - Writer]
-        AIWriter -- "uses" --> Memory[Memory Buffer Window]
-        AIWriter -- "uses" --> OutputParser[Structured Output Parser]
-    end
-
-    AIWriter --> ClearContent[Code - Sanitize Markdown]
-    AIWriter --> Designer[Google Gemini - Generate Image]
-
-    ClearContent --> CreateBlog[WordPress - Create Draft Post]
-    ClearContent --> CreatePost[LinkedIn - Publish Post]
-    Designer --> UploadDrive[Google Drive - Upload Banner]
-
-    style AIWriter fill:#f9f,stroke:#333,stroke-width:2px
-    style GeminiWriter fill:#fff,stroke:#333,dash-array: 5 5
+    Trigger([Manual Trigger]) --> Context[Get Previous Content]
+    Context --> AI[AI Content & Image Generation]
+    AI --> WordPress[WordPress Draft]
+    AI --> LinkedIn[LinkedIn Post]
+    AI --> Drive[Google Drive Upload]
 ```
 
 ## 🛠️ Interoperability
@@ -52,4 +38,4 @@ This agent is built to be "Agent-Friendly". You can trigger it from another agen
 - **Category:** Content Automation / AI Agents
 
 ---
-[🔙 Back to Main README](../../README.md)
+[🔙 Back to Main README](https://github.com/beydah/N8N_AI-Agent)

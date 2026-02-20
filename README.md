@@ -53,6 +53,12 @@ Navigate to your n8n instance and:
 
 ---
 
+## 📚 Documentation & Wiki
+
+For in-depth technical details, architecture diagrams, and enterprise deployment guides, please visit our **[Project Wiki](./WIKI.md)**.
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on:
