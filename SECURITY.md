@@ -19,7 +19,7 @@ We actively provide security updates for the following versions:
 
 If you discover a security-related issue, please report it through one of the following channels:
 
-1. **GitHub Security Advisory**: Use the [Private reporting](https://github.com/beydah/N8N_AI-Agent_Content-Creator/security/advisories/new) feature.
+1. **GitHub Security Advisory**: Use the [Private reporting](https://github.com/beydah/N8N-AI-Agent/security/advisories/new) feature.
 2. **Email**: Send detailed information to `info.beydahsaglam@gmail.com` (replace with actual site if different).
 
 ### What to include in your report:

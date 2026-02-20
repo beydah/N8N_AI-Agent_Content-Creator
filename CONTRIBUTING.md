@@ -29,8 +29,8 @@ Before contributing, ensure you have:
 1. **Fork the Repository**
 
    ```bash
-   git clone https://github.com/beydah/AI-Agent.git
-   cd AI-Agent
+   git clone https://github.com/beydah/N8N-AI-Agent.git
+   cd N8N-AI-Agent
    ```
 
 2. **Set Up Development Environment**

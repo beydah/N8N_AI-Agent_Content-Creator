@@ -99,4 +99,4 @@ The agent returns a verified JSON object:
 - **Category:** Content Automation / AI Agents
 
 ---
-[🔙 Back to Main README](https://github.com/beydah/N8N_AI-Agent)
+[🔙 Back to Main README](https://github.com/beydah/N8N-AI-Agent)
